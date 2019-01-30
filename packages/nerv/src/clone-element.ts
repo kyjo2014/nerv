@@ -4,6 +4,15 @@ import { extend, clone, isArray, isString, isNumber } from 'nerv-utils'
 import { isVText, isVNode, EMPTY_CHILDREN, VType, isNullOrUndef, isPortal, isInvalid } from 'nerv-shared'
 import { createVoid } from './vdom/create-void'
 
+/**
+ * 拷贝出相同节点
+ *
+ * @export
+ * @param {*} vnode
+ * @param {object} [props] // 同一个vnode 改变填入的props
+ * @param {*} children
+ * @returns {*}
+ */
 export default function cloneElement (vnode, props?: object, ...children): any {
   if (isVText(vnode)) {
     return createVText(vnode.text)
@@ -16,6 +25,7 @@ export default function cloneElement (vnode, props?: object, ...children): any {
     || (vnode && (vnode.vtype & VType.Void))) {
     return createVoid()
   }
+  // 先拷贝 props 避免改变，再extend值 ，问题：为什么还要再clone一次？
   const properties = clone(extend(clone(vnode.props), props))
   if (vnode.namespace) {
     properties.namespace = vnode.namespace

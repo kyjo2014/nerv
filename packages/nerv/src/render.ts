@@ -3,6 +3,15 @@ import { VirtualNode, isComposite } from 'nerv-shared'
 import { patch } from './vdom/patch'
 import options from './options'
 
+/**
+ * 渲染流程启动
+ *
+ * @export
+ * @param {VirtualNode} vnode
+ * @param {Element} container
+ * @param {Function} [callback]
+ * @returns
+ */
 export function render (
   vnode: VirtualNode,
   container: Element,

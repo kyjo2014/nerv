@@ -5,6 +5,12 @@ import {
   unmountComponent
 } from './lifecycle'
 
+/**
+ * 组合component = 受控组件
+ *
+ * @class ComponentWrapper
+ * @implements {CompositeComponent}
+ */
 class ComponentWrapper implements CompositeComponent {
   vtype = VType.Composite
   type: any
@@ -32,6 +38,14 @@ class ComponentWrapper implements CompositeComponent {
     this.dom = null
   }
 
+  /**
+   *
+   *
+   * @param {*} parentContext
+   * @param {*} parentComponent
+   * @returns
+   * @memberof ComponentWrapper
+   */
   init (parentContext, parentComponent) {
     return mountComponent(this, parentContext, parentComponent)
   }

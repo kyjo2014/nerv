@@ -7,6 +7,18 @@ import {
   EMPTY_OBJ
 } from 'nerv-shared'
 
+/**
+ * 创建vitrualNode的工厂
+ *
+ * @param {string} type
+ * @param {Props} props
+ * @param {VirtualChildren} children
+ * @param {*} key
+ * @param {string} namespace
+ * @param {Component<any, any>} owner
+ * @param {(Function | string | null | undefined)} ref
+ * @returns {VNode}
+ */
 function createVNode (
   type: string,
   props: Props,

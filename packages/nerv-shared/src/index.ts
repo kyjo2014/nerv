@@ -137,6 +137,13 @@ export function isNullOrUndef (o: any): o is undefined | null {
   return o === undefined || o === null
 }
 
+/**
+ * 判断是否为不可转化为VDOM的值
+ *
+ * @export
+ * @param {*} o
+ * @returns {(o is undefined | null | true | false)}
+ */
 export function isInvalid (o: any): o is undefined | null | true | false {
   return isNullOrUndef(o) || o === true || o === false
 }

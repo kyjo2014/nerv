@@ -4,6 +4,13 @@ import Ref from './ref'
 import { detachEvent } from '../event'
 import options from '../options'
 
+/**
+ * 卸载children
+ *
+ * @export
+ * @param {VirtualChildren} children
+ * @param {Element} [parentDom]
+ */
 export function unmountChildren (
   children: VirtualChildren,
   parentDom?: Element

@@ -6,6 +6,11 @@ import {
   reRenderStatelessComponent
 } from './lifecycle'
 
+/**
+ * 作用： 主要是测试吧？？主动进行各个状态的控制
+ *
+ * @class StateLessComponent
+ */
 class StateLessComponent {
   vtype = VType.Stateless
   type: Function
@@ -34,6 +39,7 @@ class StateLessComponent {
       isFunction(shouldComponentUpdate) &&
       !shouldComponentUpdate(previous.props, props, context)
     ) {
+      // shouldComponentUpdate === false 时 当前与之前的渲染内容相同。
       current._rendered = previous._rendered
       return previous.dom
     }

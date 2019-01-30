@@ -20,8 +20,8 @@ import {
 import { PropTypes } from './prop-types' // for React 15- compat
 
 export {
-  Children, // 处理
-  Component,
+  Children, // 提供处理Children的工具对象
+  Component, //
   PureComponent,
   createElement,
   cloneElement,

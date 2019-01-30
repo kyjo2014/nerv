@@ -12,6 +12,7 @@ export default {
     }
   },
   attach (vnode, ref, domNode: Element) {
+    // 判断是指向一个react组件还是html元素
     const node = isComposite(vnode) ? vnode.component : domNode
     if (isFunction(ref)) {
       ref(node)

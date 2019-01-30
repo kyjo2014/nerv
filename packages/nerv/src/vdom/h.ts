@@ -11,6 +11,14 @@ import {
 } from 'nerv-shared'
 import { isString, isArray, isNumber } from 'nerv-utils'
 
+/**
+ * h函数和createElement， create-Element有什么关系？？？？
+ *
+ * @param {string} type  html标签的内容
+ * @param {Props} props
+ * @param {VirtualChildren} [children]
+ * @returns
+ */
 function h (type: string, props: Props, children?: VirtualChildren) {
   let childNodes
   if (props.children) {
@@ -44,15 +52,15 @@ function addChildren (
   type: string
 ) {
   if (isString(children) || isNumber(children)) {
-    childNodes.push(createVText(String(children)))
-  } else if (isValidElement(children)) {
+    childNodes.push(createVText(String(children))) // 文字节点
+  } else if (isValidElement(children)) { // 元素节点
     childNodes.push(children)
-  } else if (isArray(children)) {
+  } else if (isArray(children)) { // 递归处理子节点
     for (let i = 0; i < children.length; i++) {
       addChildren(childNodes, children[i], type)
     }
   } else {
-    childNodes.push(createVoid())
+    childNodes.push(createVoid()) // 其他情况加插入空节点
   }
 }
 

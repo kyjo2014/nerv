@@ -12,11 +12,18 @@ import {
 } from 'nerv-shared'
 import SVGPropertyConfig from './vdom/svg-property-config'
 
+/**
+ * 把传入的属性转换为可以直接用的属性
+ *
+ * @param {string} type 参数不会被用到
+ * @param {Props} props
+ * @returns
+ */
 function transformPropsForRealTag (type: string, props: Props) {
   const newProps: Props = {}
   for (const propName in props) {
     const propValue = props[propName]
-    if (propName === 'defaultValue') {
+    if (propName === 'defaultValue') { // 如果有defaultValue那就有对应的Value属性
       newProps.value = props.value || props.defaultValue
       continue
     }
@@ -53,6 +60,15 @@ function transformPropsForComponent (props: Props, defaultProps?: Props) {
   return newProps
 }
 
+/**
+ * 把Component转化为对应的VNode
+ *
+ * @template T
+ * @param {(string | Function | Component<any, any>)} type
+ * @param {(T & Props | null)} [properties]
+ * @param {(...Array<VirtualChildren | null>)} _children
+ * @returns
+ */
 function createElement<T> (
   type: string | Function | Component<any, any>,
   properties?: T & Props | null,
@@ -81,8 +97,8 @@ function createElement<T> (
     }
     props.owner = CurrentOwner.current
     return type.prototype && type.prototype.render
-      ? new FullComponent(type, props)
-      : new StatelessComponent(type, props)
+      ? new FullComponent(type, props) // 完整的状态组件
+      : new StatelessComponent(type, props) // 无状态组件没有render方法，直接返回了JSX
   }
   return type
 }

@@ -164,9 +164,27 @@ export function renderComponent (component: Component<any, any>) {
   let rendered
   // errCatcher 统一处理错误
   errorCatcher(() => {
-    rendered = component.render()
+    rendered = component.render() // 问题  render最后返回的是啥？ 答案 返回component的实例
+    /* 类似下面这样的对象
+     *   { type: 'div',
+        key: null,
+        vtype: 2,
+        props:
+         { owner:
+            Outer {
+              _dirty: false,
+              _disable: true,
+              _pendingStates: [],
+              state: {},
+              props: [Object],
+              context: [Object],
+              refs: {},
+              vnode: [ComponentWrapper],
+              _parentComponent: [Connect] },
+           children: { text: '-1', vtype: 1, dom: null } },
+        children: { text: '-1', vtype: 1, dom: null },
+    */
   }, component)
-  //
   rendered = ensureVirtualNode(rendered)
   CurrentOwner.current = null
   return rendered
@@ -225,7 +243,12 @@ export function reRenderStatelessComponent (
   const rendered = current.type(current.props, parentContext)
   rendered.parentVNode = current
   current._rendered = rendered
-  return (current.dom = patch(lastRendered, rendered, lastRendered && lastRendered.dom || domNode, parentContext))
+  return (current.dom = patch(
+    lastRendered,
+    rendered,
+    (lastRendered && lastRendered.dom) || domNode,
+    parentContext
+  ))
 }
 
 /**
@@ -280,7 +303,12 @@ export function updateComponent (component, isForce = false) {
     // 获取parentNode 作为 patch后的挂载点 IE6以上就支持parentNode获取 但不支持对parentNode 的其他方法 如 replaceWith
     const parentDom = lastRendered.dom && lastRendered.dom.parentNode
     // 核心功能
-    dom = vnode.dom = patch(lastRendered, rendered, parentDom || null, childContext)
+    dom = vnode.dom = patch(
+      lastRendered,
+      rendered,
+      parentDom || null,
+      childContext
+    )
     // patch 后就可获取到生成的dom
     component._rendered = rendered
     // 触发componentDidUpdate
@@ -290,7 +318,7 @@ export function updateComponent (component, isForce = false) {
       }, component)
     }
     options.afterUpdate(vnode) // 问题？ 这是在干嘛 额外的钩子
-    while (vnode = vnode.parentVNode) {
+    while ((vnode = vnode.parentVNode)) {
       // 如果是合成类型或者无状态组件？
       if ((vnode.vtype & (VType.Composite | VType.Stateless)) > 0) {
         vnode.dom = dom // 就挂上去

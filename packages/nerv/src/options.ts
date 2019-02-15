@@ -2,6 +2,8 @@ import { noop, CompositeComponent, StatelessComponent, VirtualNode } from 'nerv-
 
 export type optionsHook = (vnode: CompositeComponent | StatelessComponent) => void
 
+// 这个是用于提供钩子的挂载点。像devtool就会使用beforeUnmount挂载点
+// 用于监测unmount的行为
 const options: {
   afterMount: optionsHook
   afterUpdate: optionsHook

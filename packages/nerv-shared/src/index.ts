@@ -24,6 +24,13 @@ export interface Portal {
 
 export type ComponentInstance = CompositeComponent | StatelessComponent
 
+/**
+ * 复合组件就是指内部通过this.props.children 动态渲染children的组件
+ *
+ * @export
+ * @interface CompositeComponent
+ * @extends {Widget}
+ */
 export interface CompositeComponent extends Widget {
   type: any
   component: Component<any, any>

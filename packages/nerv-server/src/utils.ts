@@ -87,6 +87,13 @@ const entities = {
   '\\': '&#039;'
 }
 
+/**
+ * 把非string类型的值转化为string同时进行html字符替换
+ *
+ * @export
+ * @param {*} text
+ * @returns {string}
+ */
 export function encodeEntities (text): string {
   if (typeof text !== 'string') {
     text = String(text)

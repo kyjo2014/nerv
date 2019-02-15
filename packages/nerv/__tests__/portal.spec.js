@@ -85,7 +85,7 @@ describe('createPortal', () => {
               <p>It looks like I will render here.</p>
               {show ? (
                 <Portal container={this.container}>
-                  <p>But I actually render here!</p>
+                  <p onClick={() => { console.log('wtf') }}>But I actually render here!</p>
                 </Portal>
               ) : null}
             </div>

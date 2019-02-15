@@ -52,36 +52,55 @@ function renderStylesToString (styles: string | object): string {
   }
 }
 
+/**
+ * 把VNode转化为字符串
+ *
+ * @param {*} vnode
+ * @param {*} parent
+ * @param {*} context
+ * @param {boolean} [isSvg]
+ * @returns
+ */
 function renderVNodeToString (vnode, parent, context, isSvg?: boolean) {
   if (isInvalid(vnode)) {
     return ''
   }
   const { type, props, children } = vnode
+  // 如果是文字节点直接返回处理后的html字符串
   if (isVText(vnode)) {
     return encodeEntities(vnode.text)
   } else if (isVNode(vnode)) {
+    // 如果是VNode 生成标签
     let renderedString = `<${type}`
     let html
     if (!isNullOrUndef(props)) {
       for (let prop in props) {
         const value = props[prop]
+        // 有些属性只在react中使用html字符串需要跳过
+        // 有特殊；逻辑的属性单独拎出来判断，dangerouslySetInnerHTML
         if (skipAttributes[prop]) {
           continue
         }
+        // 如果有dangerouslySetInnerHTML直接把html插进去
         if (prop === 'dangerouslySetInnerHTML') {
           html = value.__html
         } else if (prop === 'style') {
+          // 问题？ 这里为什么要重复两次一模一样的求值？
           const styleStr = renderStylesToString(value)
           renderedString += styleStr ? ` style="${renderStylesToString(value)}"` : ''
         } else if (prop === 'class' || prop === 'className') {
+          // 处理class如果是className对象就转化为字符串
           renderedString += ` class="${isString(value)
             ? value
             : hashToClassName(value)}"`
         } else if (prop === 'defaultValue') {
+          // defaultValue 源自非受控组件（受控组件是指表单的数据会传给react，非受控是表单数据DOM自行处理）
+          // value的值比defaultValue的值优先
           if (!props.value) {
             renderedString += ` value="${encodeEntities(value)}"`
           }
         } else if (prop === 'defaultChecked') {
+          //
           if (!props.checked) {
             renderedString += ` checked="${value}"`
           }

@@ -96,7 +96,7 @@ function createElement<T> (
       props.children = children || children === 0 ? children : EMPTY_CHILDREN
     }
     props.owner = CurrentOwner.current
-    return type.prototype && type.prototype.render
+    return type.prototype && type.prototype.render // 如果有render方法说明传入的是一个类
       ? new FullComponent(type, props) // 完整的状态组件
       : new StatelessComponent(type, props) // 无状态组件没有render方法，直接返回了JSX
   }

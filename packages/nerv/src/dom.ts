@@ -6,10 +6,20 @@ import { unmount } from './vdom/unmount'
 import createElement from './create-element'
 import Component from './component'
 
+/**
+ * 移除dom中的component
+ *
+ * @export
+ * @param {HTMLElement} dom
+ * @returns
+ */
 export function unmountComponentAtNode (dom) {
   const component = dom._component
+  // 如果是Nerv的虚拟节点
   if (isValidNervElement(component)) {
+    // 移除节点
     unmount(component, dom)
+    // 因为dom
     delete dom._component
     return true
   }
